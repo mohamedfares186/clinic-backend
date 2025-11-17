@@ -3,6 +3,7 @@ import app from "./app.js";
 import { logger } from "./middleware/logger.js";
 import environment from "./config/env.js";
 import { connectDB } from "./config/db.js";
+import "./models/index.js";
 
 const { port } = environment;
 
