@@ -6,6 +6,7 @@ import requestLogger from "./middleware/logger.js";
 import error from "./middleware/error.js";
 import limiter from "./middleware/limiter.js";
 import auth from "./modules/auth/routes/auth.js";
+import users from "./modules/users/routes/users.js";
 
 const app = express();
 
@@ -17,6 +18,7 @@ app.use(requestLogger as RequestHandler);
 app.use(limiter as RequestHandler);
 
 app.use("/api/v1/auth", auth);
+app.use("/api/v1/users", users);
 
 app.use(error as ErrorRequestHandler);
 

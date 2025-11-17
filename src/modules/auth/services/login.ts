@@ -1,12 +1,14 @@
 import { logger } from "../../../middleware/logger.js";
 import type { LoginCredentials } from "../../../types/credentials.js";
 import User from "../../users/models/users.js";
+import type { UserCredentials } from "../../../types/credentials.js";
 import bcrypt from "bcryptjs";
+import Role from "../../users/models/roles.js";
 
 interface LoginResult {
   success: boolean;
   message: string;
-  user?: User;
+  user?: UserCredentials;
 }
 
 class LoginService {
@@ -33,6 +35,16 @@ class LoginService {
         };
       }
 
+      const userRole = await Role.findOne({
+        where: { roleId: user.roleId },
+      });
+
+      if (!userRole)
+        return {
+          success: false,
+          message: "Initial roles are not defined",
+        };
+
       const isPasswordValid = await bcrypt.compare(password, user.password);
 
       if (!isPasswordValid) {
@@ -45,10 +57,10 @@ class LoginService {
       return {
         success: true,
         message: "Login successful",
-        user,
+        user: user,
       };
     } catch (error) {
-      logger.error(`Error logging user in: ${error}`);
+      logger.error(`Error logging user in - ${error}`);
       return {
         success: false,
         message: "An error occurred during login",

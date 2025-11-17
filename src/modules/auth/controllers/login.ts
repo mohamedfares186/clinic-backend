@@ -19,14 +19,27 @@ class LoginController {
 
       const result = await this.loginService.login({ username, password });
 
-      if (!result.success || !result.user) {
+      if (
+        !result.success ||
+        !result.user ||
+        !result.user.userId ||
+        !result.user.roleId ||
+        result.user.isVerified === undefined
+      ) {
         return res.status(401).json({
           success: false,
           message: result.message,
         });
       }
 
-      const accessToken = Tokens.access(result.user);
+      const { userId, roleId, isVerified } = result.user;
+
+      const accessToken = Tokens.access({
+        userId,
+        roleId,
+        isVerified,
+        level: 1234,
+      });
       const refreshToken = Tokens.refresh(result.user.userId);
 
       const sessionId = uuidv4();
@@ -59,7 +72,7 @@ class LoginController {
         message: "Logged in successfully",
       });
     } catch (error) {
-      logger.error(`Error logging user in: ${error}`);
+      logger.error(`Error logging user in - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",

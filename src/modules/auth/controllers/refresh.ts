@@ -52,7 +52,7 @@ class RefreshController {
         message: result.message,
       });
     } catch (error) {
-      logger.error(`Error in refresh controller: ${error}`);
+      logger.error(`Error in refresh controller - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",

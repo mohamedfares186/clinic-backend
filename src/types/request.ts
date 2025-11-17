@@ -7,6 +7,7 @@ interface UserRequest extends Request {
     | {
         userId: UUIDTypes;
         roleId: UUIDTypes;
+        level?: number;
         isVerified: boolean;
       }
     | JwtPayload;

@@ -27,7 +27,7 @@ class EmailController {
 
       return res.status(200).json(result);
     } catch (error) {
-      logger.error(`Error resending verification email: ${error}`);
+      logger.error(`Error resending verification email - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",
@@ -54,7 +54,7 @@ class EmailController {
 
       return res.status(200).json(result);
     } catch (error) {
-      logger.error(`Error verifying email: ${error}`);
+      logger.error(`Error verifying email - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",

@@ -7,24 +7,24 @@ const { combine, timestamp, json, colorize, printf } = format;
 
 const jsonFormat = combine(timestamp(), json());
 
+// Custom format that handles objects properly
+const consoleFormat = printf(({ timestamp, level, message, ...meta }) => {
+  let msg = `[${timestamp}] ${level}: ${message}`;
+
+  // If there's additional metadata, stringify it
+  if (Object.keys(meta).length > 0) {
+    msg += ` ${JSON.stringify(meta, null, 2)}`;
+  }
+
+  return msg;
+});
+
 export const logger = createLogger({
-  format: combine(
-    colorize(),
-    timestamp(),
-    printf(({ timestamp, level, message }) => {
-      return `[${timestamp}] ${level}: ${message}`;
-    })
-  ),
+  format: combine(colorize(), timestamp(), consoleFormat),
   transports: [
     new transports.Console({
       level: "debug",
-      format: combine(
-        colorize(),
-        timestamp(),
-        printf(({ timestamp, level, message }) => {
-          return `[${timestamp}] ${level}: ${message}`;
-        })
-      ),
+      format: combine(colorize(), timestamp(), consoleFormat),
     }),
     new transports.File({
       filename: "logs/info.log",
@@ -82,15 +82,15 @@ const requestLogger = (
     };
 
     if (statusCode >= 500) {
-      logger.error(`Server Error: ${response}`);
+      logger.error("Server Error", response);
     } else if (statusCode >= 400) {
       if (statusCode === 401 || statusCode === 403) {
-        logger.warn(`[SECURITY] Unauthorized/Forbidden Access: ${response}`);
+        logger.warn("[SECURITY] Unauthorized/Forbidden Access", response);
       } else {
-        logger.warn(`Client Error: ${response}`);
+        logger.warn("Client Error", response);
       }
     } else {
-      logger.info(`Response Information: ${response}`);
+      logger.info("Response Information", response);
     }
   });
   return next();

@@ -19,7 +19,7 @@ class PasswordController {
 
       return res.status(200).json(result);
     } catch (error) {
-      logger.error(`Error in forget password: ${error}`);
+      logger.error(`Error in forget password - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",
@@ -57,7 +57,7 @@ class PasswordController {
 
       return res.status(200).json(result);
     } catch (error) {
-      logger.error(`Error in reset password: ${error}`);
+      logger.error(`Error in reset password - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",

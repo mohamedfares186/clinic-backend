@@ -18,14 +18,11 @@ jobs:
         with:
           node-version: 22
 
-      - name: Install Dependencies
-        run: npm install
+      - name: Install Dependencies, and Testing the project
+        run: |
+          npm install
+          npm run lint
+          npm run type
 
-      - name: Lint
-        run: npm run lint
-
-      - name: Type Checking
-        run: npm run type
-
-      - name: Docker Image
+      - name: Build Docker Image
         run: docker build -t clinic:latest .

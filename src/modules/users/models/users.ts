@@ -13,6 +13,7 @@ class User extends Model {
   declare dateOfBirth: Date;
   declare roleId: string;
   declare isVerified: boolean;
+  declare isBanned: boolean;
 }
 
 User.init(
@@ -59,6 +60,11 @@ User.init(
       onUpdate: "CASCADE",
     },
     isVerified: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    isBanned: {
       type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,

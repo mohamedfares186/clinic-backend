@@ -8,7 +8,9 @@
     "dev": "tsx watch src/server.ts",
     "type": "tsc --noEmit",
     "lint": "eslint .",
-    "test": "jest"
+    "test": "vitest",
+    "setup:dev": "tsx src/scripts/setup.ts",
+    "setup": "node dist/scripts/setup.js"
   },
   "author": "Mohamed Fares",
   "license": "Apache-2.0",
@@ -40,8 +42,10 @@
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
     "jiti": "^2.6.1",
+    "supertest": "^7.1.4",
     "tsx": "^4.20.6",
     "typescript": "^5.9.3",
-    "typescript-eslint": "^8.46.4"
+    "typescript-eslint": "^8.46.4",
+    "vitest": "^4.0.9"
   }
 }

@@ -1,18 +1,19 @@
 import jwt from "jsonwebtoken";
 import crypto from "crypto";
 import env from "../config/env.js";
-import type { User } from "../types/credentials.js";
+import type { UserCredentials } from "../types/credentials.js";
 import type { UUIDTypes } from "uuid";
 
 const { jwtSecret } = env;
 
 class Tokens {
-  static access(user: User): string {
-    const { userId, roleId, isVerified } = user;
+  static access(user: UserCredentials): string {
+    const { userId, roleId, level, isVerified } = user;
     return jwt.sign(
       {
         userId,
         roleId,
+        level,
         isVerified,
       },
       jwtSecret as string,

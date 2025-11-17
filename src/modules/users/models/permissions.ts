@@ -1,12 +1,12 @@
 import sequelize from "../../../config/db.js";
 import { DataTypes, Model } from "sequelize";
 import Role from "./roles.js";
-import type { UUIDTypes } from "uuid";
+import type { UUID } from "crypto";
 
 class Permission extends Model {
-  declare permissionId: UUIDTypes;
+  declare permissionId: UUID;
   declare action: string;
-  declare roleId: UUIDTypes;
+  declare roleId: UUID;
   declare category: string;
   declare description: string;
 }

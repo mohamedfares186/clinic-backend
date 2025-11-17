@@ -1,11 +1,26 @@
 import type { UUIDTypes } from "uuid";
 
-interface User {
-  userId: UUIDTypes;
+interface RoleType {
   roleId: UUIDTypes;
-  email: string;
-  username: string;
-  isVerified: boolean;
+  title: string;
+  level: number;
+  description?: string;
+}
+
+interface UserCredentials {
+  userId?: UUIDTypes;
+  roleId?: UUIDTypes;
+  level?: number;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  username?: string;
+  password?: string;
+  repeatPassword?: string;
+  dateOfBirth?: Date;
+  isVerified?: boolean;
+  isBanned?: boolean;
+  roleTitle?: RoleType;
 }
 
 interface LoginCredentials {
@@ -23,4 +38,4 @@ interface RegisterCredentials {
   dateOfBirth: string;
 }
 
-export type { User, LoginCredentials, RegisterCredentials };
+export type { UserCredentials, LoginCredentials, RegisterCredentials };

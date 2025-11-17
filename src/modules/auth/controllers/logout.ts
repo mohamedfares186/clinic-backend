@@ -41,7 +41,7 @@ class LogoutController {
 
       return res.status(200).json(result);
     } catch (error) {
-      logger.error(`Error in logout controller: ${error}`);
+      logger.error(`Error in logout controller - ${error}`);
       return res.status(500).json({
         success: false,
         message: "Internal server error",

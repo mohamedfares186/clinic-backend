@@ -49,7 +49,7 @@ class LogoutService {
         message: "Logged out successfully",
       };
     } catch (error) {
-      logger.error(`Error during logout: ${error}`);
+      logger.error(`Error during logout - ${error}`);
       return {
         success: false,
         message: "An error occurred during logout",

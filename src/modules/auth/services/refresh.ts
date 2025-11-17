@@ -82,7 +82,7 @@ class RefreshService {
         refreshToken: newRefreshToken,
       };
     } catch (error) {
-      logger.error(`Error refreshing tokens: ${error}`);
+      logger.error(`Error refreshing tokens - ${error}`);
       return {
         success: false,
         message: "An error occurred while refreshing tokens",

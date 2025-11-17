@@ -50,7 +50,7 @@ class PasswordService {
           "If an account exists, a reset link has been sent to your email",
       };
     } catch (error) {
-      logger.error(`Error sending password reset email: ${error}`);
+      logger.error(`Error sending password reset email - ${error}`);
       return {
         success: false,
         message: "Failed to send password reset email",
@@ -108,7 +108,7 @@ class PasswordService {
         message: "Password has been reset successfully",
       };
     } catch (error) {
-      logger.error(`Error resetting password: ${error}`);
+      logger.error(`Error resetting password - ${error}`);
       return {
         success: false,
         message: "Failed to reset password",

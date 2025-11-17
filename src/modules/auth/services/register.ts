@@ -1,6 +1,7 @@
 import { logger } from "../../../middleware/logger.js";
 import { v4 as uuidv4, type UUIDTypes } from "uuid";
 import bcrypt from "bcryptjs";
+import type { UserCredentials } from "../../../types/credentials.js";
 import User from "../../users/models/users.js";
 import type { RegisterCredentials } from "../../../types/credentials.js";
 import Tokens from "../../../utils/token.js";
@@ -14,7 +15,8 @@ const { secureSecret } = environment;
 interface RegisterResult {
   success: boolean;
   message: string;
-  user?: User;
+  user?: UserCredentials;
+  level?: number;
   emailSent?: boolean;
 }
 
@@ -54,7 +56,7 @@ class RegisterService {
       if (existingUser) {
         return {
           success: false,
-          message: "Email or username already exists",
+          message: "Email or username unavailable",
         };
       }
 
@@ -93,7 +95,7 @@ class RegisterService {
       let emailSent = false;
       try {
         const token = Tokens.secure(userId as string, secureSecret as string);
-        const link = `http://localhost:5000/api/auth/email/verify/${token}`;
+        const link = `http://localhost:9000/api/v1/auth/email/verify/${token}`;
 
         await sendEmail(
           newUser.email,
@@ -116,7 +118,7 @@ class RegisterService {
         emailSent,
       };
     } catch (error) {
-      logger.error(`Error during user registration: ${error}`);
+      logger.error(`Error during user registration - ${error}`);
       return {
         success: false,
         message: "An error occurred during registration",

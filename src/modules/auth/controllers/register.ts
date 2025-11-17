@@ -28,18 +28,29 @@ class RegisterController {
         dateOfBirth,
       } as RegisterCredentials);
 
-      if (!result.success || !result.user) {
-        const statusCode = result.message.includes("already exists")
-          ? 409
-          : 400;
+      if (
+        !result.success ||
+        !result.user ||
+        !result.user.userId ||
+        !result.user.roleId ||
+        result.user.isVerified === undefined
+      ) {
+        const statusCode = result.message.includes("unavailable") ? 409 : 400;
         return res.status(statusCode).json({
           success: false,
           message: result.message,
         });
       }
 
-      const accessToken = Tokens.access(result.user);
-      const refreshToken = Tokens.refresh(result.user.userId);
+      const { userId, roleId, isVerified } = result.user;
+
+      const accessToken = Tokens.access({
+        userId,
+        roleId,
+        isVerified,
+        level: 1234,
+      });
+      const refreshToken = Tokens.refresh(userId);
 
       try {
         const sessionId = uuidv4();
@@ -47,13 +58,15 @@ class RegisterController {
 
         await Session.create({
           sessionId,
-          userId: result.user.userId,
+          userId: userId,
           token: refreshToken,
           expiresAt,
           isRevoked: false,
         });
       } catch (sessionError) {
-        logger.error(`Failed to create session for new user: ${sessionError}`);
+        logger.error("Failed to create session for new user", {
+          error: sessionError,
+        });
       }
 
       res.cookie("access-token", accessToken, {
@@ -76,7 +89,7 @@ class RegisterController {
         emailSent: result.emailSent,
       });
     } catch (error) {
-      logger.error(`Error in register controller: ${error}`);
+      logger.error("Error in register controller", { error });
       return res.status(500).json({
         success: false,
         message: "Internal server error",
