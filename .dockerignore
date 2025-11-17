@@ -1,10 +1,13 @@
 node_modules/
+tests/
 
 dist/
 
 .vscode/
 
 database/
+migration/
+seeders/
 *.sqlite*
 *.db
 
@@ -12,3 +15,14 @@ database/
 
 logs/
 *.log
+
+README.*
+LICENSE.*
+
+.git
+.gitignore
+.github/*
+
+Dockerfile
+.dockerignore
+docker-compose.*

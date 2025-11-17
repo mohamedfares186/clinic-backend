@@ -1,0 +1,31 @@
+name: "Clinic Backend"
+
+on:
+  push:
+    branches: [main]
+  pull:
+    branches: [main]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Setup Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 22
+
+      - name: Install Dependencies
+        run: npm Install
+
+      - name: Lint
+        run: npm run lint
+
+      - name: Type Checking
+        run: npm run type
+
+      - name: Docker Image
+        run: docker build -t clinic:latest .

@@ -5,6 +5,8 @@ dist/
 .vscode/
 
 database/
+migration/
+seeders/
 *.sqlite*
 *.db
 
