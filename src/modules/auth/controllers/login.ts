@@ -24,7 +24,9 @@ class LoginController {
         !result.user ||
         !result.user.userId ||
         !result.user.roleId ||
-        result.user.isVerified === undefined
+        result.user.isVerified === undefined ||
+        !result.role ||
+        result.role === undefined
       ) {
         return res.status(401).json({
           success: false,
@@ -33,12 +35,13 @@ class LoginController {
       }
 
       const { userId, roleId, isVerified } = result.user;
+      const level = result.role;
 
       const accessToken = Tokens.access({
         userId,
         roleId,
         isVerified,
-        level: 1234,
+        level,
       });
       const refreshToken = Tokens.refresh(result.user.userId);
 

@@ -1,7 +1,10 @@
 import jwt, { type JwtPayload } from "jsonwebtoken";
+import environment from "../config/env.js";
 import { logger } from "./logger.js";
 import type { UserRequest } from "../types/request.ts";
 import type { Response, NextFunction } from "express";
+
+const { jwtSecret } = environment;
 
 const extractTokenFromRequest = (req: UserRequest): string | null => {
   const authHeader = req.headers && req.headers.authorization;
@@ -14,26 +17,29 @@ const extractTokenFromRequest = (req: UserRequest): string | null => {
   return null;
 };
 
-const authenticate = (secret: string) => {
-  return (req: UserRequest, res: Response, next: NextFunction) => {
-    try {
-      const token = extractTokenFromRequest(req);
-      if (!token) {
-        return res.status(401).json({ message: "No token provided" });
-      }
-
-      try {
-        const decoded = jwt.verify(token, secret);
-        req.user = decoded as JwtPayload;
-        return next();
-      } catch (error) {
-        logger.warn(`JWT Verification Failed: ${error}`);
-        return res.status(401).json({ message: "Invalid token" });
-      }
-    } catch (error) {
-      logger.error(`Authentication Error: ${error}`);
-      return res.status(500).json({ message: "Internal server error" });
+const authenticate = async (
+  req: UserRequest,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const token = extractTokenFromRequest(req);
+    if (!token) {
+      return res.status(401).json({ message: "No token provided" });
     }
-  };
+
+    try {
+      const decoded = jwt.verify(token, jwtSecret as string);
+      req.user = decoded as JwtPayload;
+      return next();
+    } catch (error) {
+      logger.warn(`JWT Verification Failed: ${error}`);
+      return res.status(401).json({ message: "Invalid token" });
+    }
+  } catch (error) {
+    logger.error(`Authentication Error: ${error}`);
+    return res.status(500).json({ message: "Internal server error" });
+  }
 };
+
 export default authenticate;

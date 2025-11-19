@@ -32,7 +32,7 @@ Permission.init(
       onUpdate: "CASCADE",
     },
     category: {
-      type: DataTypes.ENUM("user", "post", "comment"),
+      type: DataTypes.STRING,
       allowNull: false,
     },
     description: {

@@ -9,6 +9,7 @@ interface LoginResult {
   success: boolean;
   message: string;
   user?: UserCredentials;
+  role?: number;
 }
 
 class LoginService {
@@ -58,6 +59,7 @@ class LoginService {
         success: true,
         message: "Login successful",
         user: user,
+        role: userRole.level,
       };
     } catch (error) {
       logger.error(`Error logging user in - ${error}`);

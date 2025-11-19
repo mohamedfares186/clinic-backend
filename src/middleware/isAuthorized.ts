@@ -6,10 +6,13 @@ const authorize =
   (...allowedRoles: number[]) =>
   (req: UserRequest, res: Response, next: NextFunction) => {
     try {
-      const { user } = req;
-      if (!user) return res.status(401).json({ error: "Unauthorized" });
+      const user = req.user;
+      if (!user) {
+        logger.warn("Unauthorized access attempt:");
+        return res.status(401).json({ error: "Unauthorized" });
+      }
 
-      const role = req.user?.level;
+      const role = user.level;
       if (!allowedRoles.includes(role)) {
         logger.warn("Role access denied:", {
           userId: req.user?.userId,
