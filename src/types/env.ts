@@ -1,6 +1,7 @@
 interface EnvironmentType {
   env: string;
   port: number;
+  frontendUrl: string;
   databaseUrl?: string;
   jwtSecret?: string;
   secureSecret?: string;

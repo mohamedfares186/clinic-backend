@@ -5,7 +5,7 @@ import User from "../../users/models/users.js";
 import type { UUIDTypes } from "uuid";
 import { logger } from "../../../middleware/logger.js";
 
-const { secureSecret } = env;
+const { frontendUrl, secureSecret } = env;
 
 interface EmailVerificationResult {
   success: boolean;
@@ -19,7 +19,7 @@ class EmailService {
   ): Promise<EmailVerificationResult> {
     try {
       const token = Tokens.secure(userId as string, secureSecret as string);
-      const link = `http://localhost:5000/api/auth/email/verify/${token}`;
+      const link = `${frontendUrl}/api/auth/email/verify/${token}`;
 
       await sendEmail(
         email,

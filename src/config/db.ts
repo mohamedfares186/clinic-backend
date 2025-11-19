@@ -27,14 +27,18 @@ const sequelize = new Sequelize(database);
 export const connectDB = async () => {
   try {
     await sequelize.authenticate();
-    if (PRODUCTION || STAGING || DEVELOPMENT) {
-      await sequelize.sync({ alter: true });
-    } else {
-      await sequelize.sync({ force: true });
-    }
     logger.info(`Database has been connected and synced successfully`);
   } catch (error) {
     logger.error(`Error connecting to the database - ${error}`);
+  }
+};
+
+export const syncDB = async () => {
+  try {
+    await sequelize.sync({ alter: true });
+    logger.info(`Database synced successfully`);
+  } catch (error) {
+    logger.error(`Error syncing the database - ${error}`);
   }
 };
 

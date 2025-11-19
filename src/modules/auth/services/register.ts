@@ -10,7 +10,7 @@ import { Op } from "sequelize";
 import Role from "../../users/models/roles.js";
 import environment from "../../../config/env.js";
 
-const { secureSecret } = environment;
+const { frontendUrl, secureSecret } = environment;
 
 interface RegisterResult {
   success: boolean;
@@ -95,7 +95,7 @@ class RegisterService {
       let emailSent = false;
       try {
         const token = Tokens.secure(userId as string, secureSecret as string);
-        const link = `http://localhost:9000/api/v1/auth/email/verify/${token}`;
+        const link = `${frontendUrl}/api/v1/auth/email/verify/${token}`;
 
         await sendEmail(
           newUser.email,

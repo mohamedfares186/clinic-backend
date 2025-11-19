@@ -5,7 +5,7 @@ import bcrypt from "bcryptjs";
 import User from "../../users/models/users.js";
 import { logger } from "../../../middleware/logger.js";
 
-const { secureSecret } = env;
+const { frontendUrl, secureSecret } = env;
 
 interface PasswordResult {
   success: boolean;
@@ -36,7 +36,7 @@ class PasswordService {
         user.userId as string,
         secureSecret as string
       );
-      const link = `http://localhost:5000/api/auth/password/reset/${token}`;
+      const link = `${frontendUrl}/api/auth/password/reset/${token}`;
 
       await sendEmail(
         user.email,

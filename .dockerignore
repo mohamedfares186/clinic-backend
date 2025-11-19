@@ -12,6 +12,7 @@ seeders/
 *.db
 
 .env*
+.env.*.local
 
 logs/
 *.log
